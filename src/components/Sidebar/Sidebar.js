@@ -1,14 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
 import { SideBarData } from "./SideBarData";
-import { useState } from "react";
-import { ChevronDoubleLeftIcon } from "@heroicons/react/24/solid";
-import { ChevronDoubleRightIcon } from "@heroicons/react/24/solid";
+import {
+  ChevronDoubleLeftIcon,
+  ChevronDoubleRightIcon,
+} from "@heroicons/react/24/solid";
 
 function Sidebar() {
-  let [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
-  let onClickHandler = () => {
+  const onClickHandler = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
 
