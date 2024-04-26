@@ -13,7 +13,7 @@ function CreatePost() {
         <input
           className="w-64 outline-none border-none text-lg border-r-0 rounded-l-lg"
           type="text"
-          placeholder="What's on your mind?"
+          placeholder="connect with other farmers "
           value={post}
           onChange={(e) => setPost(e.target.value)}
         />
