@@ -24,7 +24,7 @@ export const SideBarData = [
     icon: <PencilIcon className="size-4 " />,
   },
   {
-    title: "Plant Health Scanner",
+    title: "Health Scanner",
     link: "Plant-health-scanner",
     icon: <CameraIcon className="size-4 " />,
   },

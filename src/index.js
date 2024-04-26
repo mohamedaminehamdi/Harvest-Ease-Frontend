@@ -11,7 +11,9 @@ root.render(
   <React.StrictMode>
     <BrowserRouter>
       <div className="flex w-full">
-        <Sidebar />
+        <div className="w-[50%] fixed">
+        <Sidebar/>
+        </div>
         <div className="flex-grow">
           <App />
         </div>
