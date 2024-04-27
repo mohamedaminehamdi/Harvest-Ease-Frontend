@@ -1,15 +1,14 @@
-import React, { useState } from "react";
+import React from "react";
 import { NavLink } from "react-router-dom";
 import { SideBarData } from "./SideBarData";
-import {
-  ChevronDoubleLeftIcon,
-  ChevronDoubleRightIcon,
-} from "@heroicons/react/24/solid";
-
+import { useState } from "react";
+import { ChevronDoubleLeftIcon } from "@heroicons/react/24/solid";
+import { ChevronDoubleRightIcon } from "@heroicons/react/24/solid";
+import Logo from "../../assets/Logo.png"
 function Sidebar() {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  let [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
-  const onClickHandler = () => {
+  let onClickHandler = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
 
@@ -34,13 +33,11 @@ function Sidebar() {
         )}
       </button>
       {isSidebarOpen && (
-        <div className=" pt-8 pb-3 flex-row text-right pr-7 hover:text-lightGreen">
-          HarvestEase
-        </div>
+        <img src={Logo} alt="logo" className="flex p-5"/>
       )}
       <ul
         className={`place-content-center flex-col  font-bold text-xs text-darkBlue justify-end ${
-          isSidebarOpen ? "mt-12" : "bottom-2 absolute"
+          isSidebarOpen ? "mt-6" : "bottom-2 absolute"
         }`}
       >
         {SideBarData.map((val, key) => {
@@ -48,19 +45,33 @@ function Sidebar() {
             <li key={key}>
               <NavLink
                 to={val.link}
-                className={({ isActive }) =>
-                  isActive &&
-                  isSidebarOpen &&
-                  "bg-pastelGreen rounded-full h-9 p-1.5"
+                className={({ isActive }) => {
+
+                  if(isActive && isSidebarOpen) {
+                    return "bg-pastelGreen rounded-full h-9 p-1.5"
+                  }
+                  else if (!isActive && isSidebarOpen) {
+                    return "hover:bg-gray-500 hover:text-pastelGreen rounded-full h-9 p-1.5"
+                  }
+
+                  else if(isActive && !isSidebarOpen){
+                      return 
+                  }
+                  
+                 
+                 
+                } 
                 }
               >
                 {isSidebarOpen ? (
-                  <span className="hover:bg-pastelGreen rounded-full inline-block h-4 justify-center pt-1 pb-5 px-3 mt-1">
+                  <span className="inline-block h-4 justify-center pt-1 pb-5 px-3 mt-3">
                     {val.title}
                   </span>
                 ) : (
                   <button className=" bg-darkBlue hover:bg-blue-950 rounded-full size-8 items-center justify-center flex my-3 text-darkGrey">
-                    {val.icon}
+                    {
+                       val.icon
+                    }
                   </button>
                 )}
               </NavLink>

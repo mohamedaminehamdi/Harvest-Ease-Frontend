@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import Sk from "../../assets/skan.jpg"
 
 function CreatePost() {
   const [post, setPost] = useState("");
@@ -7,7 +8,7 @@ function CreatePost() {
       <div className="flex items-center">
         <img
           className="w-10 h-10 rounded-full mr-2"
-          src="https://via.placeholder.com/50"
+          src={Sk}
           alt="User Avatar"
         />
         <input
