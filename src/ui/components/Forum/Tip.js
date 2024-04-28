@@ -5,7 +5,7 @@ import { EllipsisVerticalIcon } from "@heroicons/react/24/outline";
 
 const Tip = () => {
   return (
-    <div className="max-w-sm rounded-xl shadow-md bg-[#F7FECB]">
+    <div className="max-w-xs rounded-xl shadow-md bg-[#F7FECB]">
       <div className="p-4">
         <div className="flex justify-between items-center mb-4">
           <div className="flex">
