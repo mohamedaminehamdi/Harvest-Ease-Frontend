@@ -6,8 +6,8 @@ import CreatePost from "../components/Forum/CreatePost";
 
 function CommunityPage() {
   return (
-    <div>
-      <div className="max-w-sm mx-auto">
+    <>
+      <div className="max-w-md mx-auto">
         <CreatePost />
       </div>
       <div className="flex">
@@ -17,7 +17,7 @@ function CommunityPage() {
           <TrendingPosts />
         </div>
       </div>
-    </div>
+    </>
   );
 }
 
