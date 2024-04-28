@@ -3,17 +3,16 @@
   "name": "Create React App Sample",
   "icons": [
     {
-      "src": "skl.jpeg",
-      "type": "image/jpeg"
+      "src": "Logo.png",
+      "type": "image/png"
     },
     {
-      "src": "skl.jpeg",
-      "type": "image/jpeg",
-      "sizes": "192x192"
+      "src": "Logo.png",
+      "type": "image/png"
     },
     {
-      "src": "skl.jpeg",
-      "type": "image/jpeg"
+      "src": "Logo.png",
+      "type": "image/png"
     }
   ],
   "start_url": ".",

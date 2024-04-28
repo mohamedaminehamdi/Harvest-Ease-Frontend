@@ -1,5 +1,5 @@
 import React from "react";
-import MessagesLayout from "../components/chatbot/MessageLayout";
+import MessagesLayout from "../components/chatbot/MessagesLayout";
 import ChatbotInput from "../components/chatbot/ChatbotInput";
 function ChatPage() {
   return (

@@ -9,6 +9,11 @@ import {
 
 export const SideBarData = [
   {
+    title:"Home",
+    link:"/",
+    icon:<HomeIcon className='size-4'/>
+},
+  {
     title: "Forum",
     link: "/Forum",
     icon: <HomeIcon className="size-4 " />,
