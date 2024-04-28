@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faThumbsUp, faComment } from '@fortawesome/free-solid-svg-icons'; // Importing required FontAwesome icons
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faThumbsUp, faComment } from "@fortawesome/free-solid-svg-icons"; // Importing required FontAwesome icons
 import Ahmed from "../../assets/ahmed.jpg";
 import Bouden from "../../assets/bouden.jpg";
 import Su from "../../assets/su.jpg";
@@ -16,19 +16,20 @@ const Feed = () => {
       likes: 10,
       comments: [
         { user: "John", text: "I can help you with that." },
-        { user: "Emma", text: "Have you tried changing the soil?" }
-      ]
+        { user: "Emma", text: "Have you tried changing the soil?" },
+      ],
     },
     {
       user: "boudrenski",
       image: Bouden,
-      content: "Hello, everyone. is there anyone who has knowledge on edible flowers?",
+      content:
+        "Hello, everyone. is there anyone who has knowledge on edible flowers?",
       created: "2d ago",
       likes: 2,
       comments: [
         { user: "Alice", text: "Yes, I know a lot about edible flowers." },
-        { user: "Bob", text: "You can try researching on XYZ website." }
-      ]
+        { user: "Bob", text: "You can try researching on XYZ website." },
+      ],
     },
     {
       user: "sumaya",
@@ -38,12 +39,12 @@ const Feed = () => {
       likes: 15,
       comments: [
         { user: "Eva", text: "What type of plants are you growing?" },
-        { user: "Adam", text: "Have you tried giving them more sunlight?" }
-      ]
+        { user: "Adam", text: "Have you tried giving them more sunlight?" },
+      ],
     },
   ];
 
-  const [selected, setSelected] = useState('');
+  const [selected, setSelected] = useState("");
   const [commentsVisible, setCommentsVisible] = useState(false);
   const [selectedComments, setSelectedComments] = useState([]);
   const [commenterImages] = useState([Ahmed, Bouden, Su]); // Assuming commenter images are the same as post images
@@ -56,23 +57,37 @@ const Feed = () => {
 
   return (
     <div className="flex flex-col items-center justify-center w-full">
-      <div className="flex items-center justify-between w-full h-[150px] mb-8">
+      <div className="flex items-center justify-between w-full h-[150px]">
         <div className="flex items-center justify-evenly border-b border-gray-200 w-full max-w-[800px] mx-auto">
-          <div className={`cursor-pointer ${selected === 'for you' ? 'bg-gray-200' : ''}`} onClick={() => setSelected("for you")}>
-            <div className="hover:bg-gray-200">
-              <h1 className={`font-bold text-lg ${selected === 'for you' ? 'text-gray-700' : 'text-gray-600'}`}>For you</h1>
-            </div>
-          </div>
-          <div className={`cursor-pointer ${selected === 'following' ? 'bg-gray-200' : ''}`} onClick={() => setSelected('following')}>
-            <div className="hover:bg-gray-200">
-              <h1 className={`font-bold text-lg ${selected === 'following' ? 'text-gray-700' : 'text-gray-600'}`}>Following</h1>
-            </div>
-          </div>
+          <button
+            className={`hover:bg-gray-200 font-bold text-lg cursor-pointer h-[30px] w-1/2 ${
+              selected === "for you" ? "bg-gray-200" : "text-gray-400"
+            }`}
+            onClick={() => setSelected("for you")}
+          >
+            For you
+          </button>
+          <button
+            className={`hover:bg-gray-200 h-[30px] font-bold text-lg cursor-pointer w-1/2 ${
+              selected === "following" ? "bg-gray-200" : "text-gray-400"
+            }`}
+            onClick={() => setSelected("following")}
+          >
+            Following
+          </button>
         </div>
       </div>
 
       <div className="flex flex-col justify-center w-full max-w-[800px] mx-auto">
-        <div className="overflow-y-scroll max-h-[400px]" style={{ overflowY: 'scroll', maxHeight: '400px', scrollbarWidth: 'thin', scrollbarColor: 'pastelYellow pastelYellow' }}>
+        <div
+          className="overflow-y-scroll max-h-[400px]"
+          style={{
+            overflowY: "scroll",
+            maxHeight: "400px",
+            scrollbarWidth: "thin",
+            scrollbarColor: "pastelYellow pastelYellow",
+          }}
+        >
           {dummyPosts.map((post, index) => (
             <div key={index} className="bg-white p-4 rounded-lg shadow-md mb-4">
               <div className="flex items-center mb-2">
@@ -93,7 +108,10 @@ const Feed = () => {
                     {post.likes} Likes
                   </button>
                   {/* Comment button */}
-                  <button className="flex items-center text-gray-600" onClick={() => toggleComments(post.comments)}>
+                  <button
+                    className="flex items-center text-gray-600"
+                    onClick={() => toggleComments(post.comments)}
+                  >
                     <FontAwesomeIcon icon={faComment} className="mr-1" />
                     {post.comments.length} Comments
                   </button>
@@ -105,7 +123,14 @@ const Feed = () => {
       </div>
 
       {/* Render Comments component when visible */}
-      {commentsVisible && <Comments comments={selectedComments} commenterImages={commenterImages} onClose={() => setCommentsVisible(false)} setComments={setSelectedComments} />}
+      {commentsVisible && (
+        <Comments
+          comments={selectedComments}
+          commenterImages={commenterImages}
+          onClose={() => setCommentsVisible(false)}
+          setComments={setSelectedComments}
+        />
+      )}
     </div>
   );
 };
