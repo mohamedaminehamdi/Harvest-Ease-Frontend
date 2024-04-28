@@ -7,12 +7,12 @@ import CreatePost from "../components/Forum/CreatePost";
 function CommunityPage() {
   return (
     <>
-      <div className="max-w-md mx-auto">
-        <CreatePost />
-      </div>
-      <div className="flex">
-        <Feed />
-        <div className="flex flex-col gap-3 mr-5">
+      <div className="flex justify-around">
+        <div className="flex flex-col flex-auto justify-center items-center ml-3">
+          <CreatePost />
+          <Feed />
+        </div>
+        <div className="flex flex-col align-center justify-center gap-3 mr-5 ml-3 ">
           <Tip />
           <TrendingPosts />
         </div>

@@ -19,7 +19,7 @@ const TrendingPosts = () => {
     },
   ];
   return (
-    <div className="flex flex-col justify-center align-center bg-[#154734] max-w-sm rounded-xl shadow-md p-4">
+    <div className="flex flex-col justify-center align-center bg-[#154734] max-w-xs rounded-xl shadow-md p-4">
       <div className="flex justify-center items-center mb-4">
         <h2 className="text-xl font-bold text-[#f7fecb]">Trending Posts</h2>
       </div>

@@ -1,27 +1,28 @@
 import React, { useState } from "react";
 import Sk from "../../assets/skan.jpg";
+import { faIcons } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import PostModal from "./PostModal";
 
 function CreatePost() {
-  const [post, setPost] = useState("");
+  const [showModal, setShowModal] = useState(false);
   return (
-    <div className="w-full bg-white rounded-lg shadow-md p-4 flex justify-between mt-4 mb-4 border border-gray-300">
-      <div className="flex items-center">
+    <div className="w-full max-w-sm bg-white rounded-lg shadow-md p-4 mt-4 mb-2 border border-gray-300">
+      <div className="flex items-center mb-2 justify-around">
         <img
           className="w-10 h-10 rounded-full mr-2"
           src={Sk}
           alt="User Avatar"
         />
-        <input
-          className="w-64 outline-none border-none text-lg border-r-0 rounded-l-lg"
-          type="text"
-          placeholder="connect with other farmers "
-          value={post}
-          onChange={(e) => setPost(e.target.value)}
-        />
+        <div
+          className="cursor-pointer text-lg text-gray-400 ml-2"
+          onClick={() => setShowModal(true)}
+        >
+          connect with other farmers
+        </div>
+        <FontAwesomeIcon icon={faIcons} className="size-6 ml-1" />
       </div>
-      <button className="bg-[#B0CDB3] px-4 py-1 text-lg text-black text-right border-none rounded-full hover:bg-[#8BB09C] focus:outline-none">
-        Post
-      </button>
+      {showModal && <PostModal setShowModal={setShowModal} />}
     </div>
   );
 }

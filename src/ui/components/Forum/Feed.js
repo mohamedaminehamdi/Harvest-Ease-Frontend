@@ -44,7 +44,7 @@ const Feed = () => {
     },
   ];
 
-  const [selected, setSelected] = useState("");
+  const [selected, setSelected] = useState("for you");
   const [commentsVisible, setCommentsVisible] = useState(false);
   const [selectedComments, setSelectedComments] = useState([]);
   const [commenterImages] = useState([Ahmed, Bouden, Su]); // Assuming commenter images are the same as post images
