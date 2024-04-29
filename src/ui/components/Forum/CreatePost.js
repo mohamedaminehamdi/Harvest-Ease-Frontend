@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Sk from "../../assets/skan.jpg";
+import Sk from "../../../assets/skan.jpg";
 import { faIcons } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import PostModal from "./PostModal";

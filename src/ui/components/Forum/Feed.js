@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faThumbsUp, faComment } from "@fortawesome/free-solid-svg-icons"; // Importing required FontAwesome icons
-import Ahmed from "../../assets/ahmed.jpg";
-import Bouden from "../../assets/bouden.jpg";
-import Su from "../../assets/su.jpg";
+import Ahmed from "../../../assets/ahmed.jpg";
+import Bouden from "../../../assets/bouden.jpg";
+import Su from "../../../assets/su.jpg";
 import Comments from "./comments"; // Importing the Comments component
+import FollowingList from "./FollowingList"; // Importing the FollowingList component
 
 const Feed = () => {
   const dummyPosts = [
@@ -48,6 +49,7 @@ const Feed = () => {
   const [commentsVisible, setCommentsVisible] = useState(false);
   const [selectedComments, setSelectedComments] = useState([]);
   const [commenterImages] = useState([Ahmed, Bouden, Su]); // Assuming commenter images are the same as post images
+  const [followingVisible, setFollowingVisible] = useState(false);
 
   // Function to toggle comments visibility
   const toggleComments = (comments) => {
@@ -71,7 +73,10 @@ const Feed = () => {
             className={`hover:bg-gray-200 h-[30px] font-bold text-lg cursor-pointer w-1/2 ${
               selected === "following" ? "bg-gray-200" : "text-gray-400"
             }`}
-            onClick={() => setSelected("following")}
+            onClick={() => {
+              setSelected("following");
+              setFollowingVisible(true); // Show following list when "Following" is clicked
+            }}
           >
             Following
           </button>
@@ -130,6 +135,11 @@ const Feed = () => {
           onClose={() => setCommentsVisible(false)}
           setComments={setSelectedComments}
         />
+      )}
+
+      {/* Render FollowingList component when visible */}
+      {followingVisible && (
+        <FollowingList onClose={() => setFollowingVisible(false)} />
       )}
     </div>
   );

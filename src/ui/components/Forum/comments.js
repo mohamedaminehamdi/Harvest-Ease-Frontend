@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faThumbsUp } from '@fortawesome/free-solid-svg-icons';
 
 // Single Comment component
-const SingleComment = ({ comment, commenterImage, onReply }) => {
+const SingleComment = ({ comment, onReply }) => {
   const [liked, setLiked] = useState(false);
 
   const handleLike = () => {
@@ -13,7 +13,7 @@ const SingleComment = ({ comment, commenterImage, onReply }) => {
   return (
     <div className="flex items-start mb-4">
       {/* Commenter Image */}
-      <img src={commenterImage} alt="commenter" className="w-8 h-8 rounded-full mr-2" />
+      <img src={comment.commenterImage} alt="commenter" className="w-8 h-8 rounded-full mr-2" />
 
       {/* Comment Content */}
       <div className="flex-grow">
@@ -39,19 +39,31 @@ const SingleComment = ({ comment, commenterImage, onReply }) => {
   );
 };
 
-const Comments = ({ comments, commenterImages, onClose, setComments }) => {
+const Comments = ({ comments, onClose, setComments }) => {
   // Reply input state
   const [reply, setReply] = useState('');
   const [replyingComment, setReplyingComment] = useState(null);
 
   // Function to handle adding a reply
   const handleAddReply = () => {
-    // Logic to add reply
-    console.log("Adding reply to:", replyingComment, "Reply:", reply);
-    // Clear reply input
-    setReply('');
-    // Reset replyingComment
-    setReplyingComment(null);
+    // Check if the reply is not empty
+    if (reply.trim() !== '') {
+      // Add the reply to the replying comment
+      const updatedComments = comments.map((comment) => {
+        if (comment === replyingComment) {
+          return {
+            ...comment,
+            replies: [...(comment.replies || []), { user: "You", created: new Date().toLocaleString(), text: reply }]
+          };
+        }
+        return comment;
+      });
+      setComments(updatedComments);
+      // Clear reply input
+      setReply('');
+      // Reset replyingComment
+      setReplyingComment(null);
+    }
   };
 
   // Function to handle replying to a comment
@@ -64,14 +76,15 @@ const Comments = ({ comments, commenterImages, onClose, setComments }) => {
   const handleAddComment = () => {
     // Check if the reply is not empty
     if (reply.trim() !== '') {
-      // Add the new comment to the list of comments
+      // Add the new comment to the list of comments with the user's image
       const newComment = {
         user: "You", // Assuming the user's name is "You"
         created: new Date().toLocaleString(), // Assuming the current date/time
-        text: reply
+        text: reply,
+        commenterImage: "" // Provide the URL of the user's image here
       };
       const newComments = [...comments, newComment];
-      setComments(newComments); // Corrected from setComments to setComments
+      setComments(newComments);
       // Clear reply input
       setReply('');
     }
@@ -88,7 +101,6 @@ const Comments = ({ comments, commenterImages, onClose, setComments }) => {
             <div key={index}>
               <SingleComment
                 comment={comment}
-                commenterImage={commenterImages[index]}
                 onReply={handleReply}
               />
               {/* Reply Input */}
@@ -101,9 +113,15 @@ const Comments = ({ comments, commenterImages, onClose, setComments }) => {
                     placeholder="Write a reply..."
                     rows={3}
                   />
-                  <button onClick={handleAddReply} className="bg-grassGreen text-white px-4 py-2 rounded mt-2">Reply</button>
+                  <button onClick={handleAddReply} className="bg-green-600 text-white px-4 py-2 rounded mt-2">Reply</button>
                 </div>
               )}
+              {/* Display Replies */}
+              {comment.replies && comment.replies.map((reply, replyIndex) => (
+                <div key={replyIndex} className="ml-8 mb-2">
+                  <p className="text-gray-500"><span className="font-semibold">You:</span> {reply.text}</p>
+                </div>
+              ))}
             </div>
           ))}
         </div>
@@ -117,7 +135,7 @@ const Comments = ({ comments, commenterImages, onClose, setComments }) => {
             rows={3}
           />
           <div className="flex justify-between">
-            <button onClick={handleAddComment} className="bg-grassGreen text-white px-4 py-2 rounded mt-2">Add Comment</button>
+            <button onClick={handleAddComment} className="bg-green-600 text-white px-4 py-2 rounded mt-2">Add Comment</button>
             <button onClick={onClose} className="bg-red-500 text-white px-4 py-2 rounded mt-2">Close</button>
           </div>
         </div>

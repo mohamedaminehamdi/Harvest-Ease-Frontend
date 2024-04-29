@@ -4,7 +4,7 @@ import { SideBarData } from "./SideBarData";
 import { useState } from "react";
 import { ChevronDoubleLeftIcon } from "@heroicons/react/24/solid";
 import { ChevronDoubleRightIcon } from "@heroicons/react/24/solid";
-import Logo from "../../assets/Logo.png"
+import Logo from "../../../assets/Logo.png"
 function Sidebar() {
   let [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
