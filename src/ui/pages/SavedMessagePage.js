@@ -1,9 +1,12 @@
 import React from 'react'
-function SavedMessagePage(){
-    return (
-        <div>
+import SavedMessagesLayout from '../components/chatbot/SavedMessagesLayout'
 
-        </div>
-    )
+function SavedMessagesPage() {
+  return (
+    <>
+      <SavedMessagesLayout/>
+    </>
+  )
 }
-export default  SavedMessagePage
+
+export default SavedMessagesPage
