@@ -1,5 +1,5 @@
 import React from 'react'
-import SavedMessagesLayout from '../components/chatbot/SavedMessagesLayout'
+import SavedMessagesLayout from '../../ui/components/chatbot/SavedMessagesLayout'
 
 function SavedMessagesPage() {
   return (
