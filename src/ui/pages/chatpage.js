@@ -1,19 +1,13 @@
-import React from 'react'
-import ChatbotInput from '../components/chatbot/ChatbotInput'
-import MessagesLayout from '../components/chatbot/MessagesLayout'
-import ChatbotPageNavBar from '../components/chatbot/ChatbotPageNavbar'
-import ChatProvider from '../../providers/ChatProvider'
-
-function ChatBotPage() {
+import React from "react";
+import MessagesLayout from "../components/chatbot/MessagesLayout";
+import ChatbotInput from "../components/chatbot/ChatbotInput";
+function ChatPage() {
   return (
-    <ChatProvider>
-    <div className="h-screen flex-col flex justify-end p-6">
-      {/* <ChatbotPageNavBar className='mb-2'/>
-      <MessagesLayout className=''/>
-      <ChatbotInput className="fixed bottom-3 "/> */}
-    </div>
-    </ChatProvider>
+    < >
+      <MessagesLayout/>
+      <ChatbotInput className="fixed bottom-3 " />
+    </>
   )
 }
 
-export default ChatBotPage
+export default ChatPage;

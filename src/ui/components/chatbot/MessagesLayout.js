@@ -8,6 +8,7 @@ function MessagesLayout() {
         {
             mockChatbotMessages.map(
                 (val, key)=>{
+                   console.log(val.content)
                     return(
                          <MessageLayout message={val}/>
                         

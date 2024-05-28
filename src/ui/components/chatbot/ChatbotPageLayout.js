@@ -2,6 +2,7 @@ import React from 'react'
 import ChatbotPageNavBar from './ChatbotPageNavbar'
 import { Outlet } from 'react-router-dom'
 import { useState } from 'react';
+import ChatProvider from '../../../providers/ChatProvider';
 
 function ChatbotPageLayout() {
   const [activeTab, setActiveTab] = useState('Chat'); 
@@ -12,12 +13,14 @@ function ChatbotPageLayout() {
     //     <Outlet/>
     // </div>
 
-    <div className="flex flex-col w-full h-screen">
-        <ChatbotPageNavBar activeTab={activeTab} setActiveTab={setActiveTab} />
-        {/* <div className=" flex-col flex flex-shrink px-6 pt-2 bg-yellow-300 max-h-72">
-        </div> */}
-        <Outlet/>
-    </div>
+      <ChatProvider>
+        <div className="flex flex-col w-full h-screen">
+            <ChatbotPageNavBar activeTab={activeTab} setActiveTab={setActiveTab} />
+            {/* <div className=" flex-col flex flex-shrink px-6 pt-2 bg-yellow-300 max-h-72">
+            </div> */}
+              <Outlet/>
+        </div>
+      </ChatProvider>
   ) 
 }
 

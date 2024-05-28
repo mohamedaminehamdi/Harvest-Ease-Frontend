@@ -8,6 +8,7 @@ function SavedMessagesLayout() {
     const [messagePopup, setMessagePopup] = useState([]);
     const [deleteMessagePopup, setDeleteMessagePopup] = useState(false);
     const  { chatData } =useContext(ChatContext)
+    console.log('contexxxt')
     const handleOnClick = (messageId) => {
           setDeleteMessagePopup(true)
         
