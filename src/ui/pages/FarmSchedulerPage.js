@@ -31,6 +31,86 @@ const style = {
   boxShadow: 24,
   p: 4,
 };
+const EVENTS = [
+  {
+    event_id: 1,
+    title: "Event 1",
+    start: new Date(new Date(new Date().setHours(9)).setMinutes(0)),
+    end: new Date(new Date(new Date().setHours(10)).setMinutes(0)),
+    description: "description event1",
+    disabled: true,
+    admin_id: [1, 2, 3, 4],
+    color: "#cce8e6",
+  },
+  {
+    event_id: 2,
+    title: "Event 2",
+    start: new Date(new Date(new Date().setHours(10)).setMinutes(0)),
+    end: new Date(new Date(new Date().setHours(12)).setMinutes(0)),
+    description: "description event2",
+    admin_id: 2,
+    color: "#f3b4c3",
+  },
+  {
+    event_id: 3,
+    title: "Event 3",
+    start: new Date(new Date(new Date().setHours(11)).setMinutes(0)),
+    end: new Date(new Date(new Date().setHours(12)).setMinutes(0)),
+    description: "description event3",
+    admin_id: 1,
+    editable: false,
+    deletable: false,
+    color: "#8cc4bd",
+  },
+  {
+    event_id: 4,
+    title: "Event 4",
+    start: new Date(
+      new Date(new Date(new Date().setHours(9)).setMinutes(30)).setDate(
+        new Date().getDate() - 2
+      )
+    ),
+    end: new Date(
+      new Date(new Date(new Date().setHours(11)).setMinutes(0)).setDate(
+        new Date().getDate() - 2
+      )
+    ),
+    admin_id: 2,
+    description: "description event4",
+    color: "#b0cdb3",
+  },
+  {
+    event_id: 5,
+    title: "Event 5",
+    start: new Date(
+      new Date(new Date(new Date().setHours(10)).setMinutes(30)).setDate(
+        new Date().getDate() - 2
+      )
+    ),
+    end: new Date(
+      new Date(new Date(new Date().setHours(14)).setMinutes(0)).setDate(
+        new Date().getDate() - 2
+      )
+    ),
+    description: "description event5",
+    admin_id: 2,
+    editable: true,
+    color: "#f7fecb",
+  },
+  {
+    event_id: 6,
+    title: "Event 6",
+    start: new Date(
+      new Date(new Date(new Date().setHours(10)).setMinutes(30)).setDate(
+        new Date().getDate() - 4
+      )
+    ),
+    end: new Date(new Date(new Date().setHours(14)).setMinutes(0)),
+    description: "description event6",
+    color: "#fed6df",
+    admin_id: 2,
+  },
+];
 
 function FarmSchedulerPage() {
   function getDate() {
