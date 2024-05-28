@@ -1,41 +1,35 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, createContext } from 'react';
 
-const ChatContext = React.createContext();
+const ChatContext = createContext();
 
-let ChatProvider = ({ children }) => {
-    const [chatData, setChatData] = useState(
-            () => {
-                const storedMessages = JSON.parse(localStorage.getItem('messages')) || [];
-        return storedMessages;
-            }
-    );
-    
-    const deleteMessage = (messageId) => {
-        setChatData(chatData.filter((message) => message.id !== messageId));
-        console.log('hii')
-      };
-    
-    const saveMessage = (message) => {
-    const messageExists = chatData.some((msg) => msg.id === message.id);
+const ChatProvider = ({ children }) => {
+  const [chatData, setChatData] = useState(() => {
+    const storedMessages = JSON.parse(localStorage.getItem('messages')) || [];
+    return storedMessages;
+  });
 
-    !messageExists && setChatData([...chatData, message]); 
-
-        
-      
-      
-    };
-
-
-    useEffect(() => {
-        localStorage.setItem('messages', JSON.stringify(chatData));
-      }, [chatData]);
-  
-    return (
-      <ChatContext.Provider value={{ chatData, saveMessage, deleteMessage }}>
-        {children}
-      </ChatContext.Provider>
-    );
+  const deleteMessage = (messageId) => {
+    setChatData(chatData.filter((message) => message.id !== messageId));
+    console.log('Message deleted:', messageId);
   };
 
-  export default ChatProvider ;
-  export { ChatContext }
+  const saveMessage = (message) => {
+    const messageExists = chatData.some((msg) => msg.id === message.id);
+    if (!messageExists) {
+      setChatData([...chatData, message]);
+    }
+  };
+
+  useEffect(() => {
+    localStorage.setItem('messages', JSON.stringify(chatData));
+  }, [chatData]);
+
+  return (
+    <ChatContext.Provider value={{ chatData, saveMessage, deleteMessage }}>
+      {children}
+    </ChatContext.Provider>
+  );
+};
+
+export default ChatProvider;
+export { ChatContext };

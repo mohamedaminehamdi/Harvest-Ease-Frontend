@@ -9,7 +9,7 @@ function MessagesLayout() {
             mockChatbotMessages.map(
                 (val, key)=>{
                     return(
-                         <MessageLayout messageContent={val.message} sender={val.sender} key={val.id}/>
+                         <MessageLayout message={val}/>
                         
                     )
                 }
