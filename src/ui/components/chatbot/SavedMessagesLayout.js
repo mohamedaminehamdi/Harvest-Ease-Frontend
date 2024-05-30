@@ -7,7 +7,7 @@ import DeleteMessagePopup from './DeleteMessagePopup';
 function SavedMessagesLayout() {
     const [messagePopup, setMessagePopup] = useState([]);
     const [deleteMessagePopup, setDeleteMessagePopup] = useState(false);
-    const  { chatData } =useContext(ChatContext)
+    const  { savedChatData } =useContext(ChatContext)
     console.log('contexxxt')
     const handleOnClick = (messageId) => {
           setDeleteMessagePopup(true)
@@ -26,7 +26,7 @@ function SavedMessagesLayout() {
   return (
     <ul className='flex flex-col p-7 h-full overflow-auto mt-5 relative w-full'>
         {
-            chatData.map(
+            savedChatData.map(
                 (val,key)=> <li key={val.id} className='mb-10 flex flex-col'>
                     <div className='mx-auto mb-3'>
                         {val.timestamp}
