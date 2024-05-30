@@ -6,12 +6,18 @@
     border-radius: 10px;
     box-shadow: 0 4px 20px rgba(0,0,0,0.1); /* Soft shadow for depth */
 }
+.settings-content.blur {
+    filter: blur(2px);  /* Apply blur effect when modal is open */
+}
 
 .setting {
     margin-bottom: 20px;
     padding: 15px;
     border-radius: 5px;
     background: #F7F7F7; /* Light grey background for each setting */
+    display: flex;
+    flex-direction: column;
+    align-items: stretch; /* Ensures that children stretch to fill the width */
 }
 
 .setting label {
@@ -41,6 +47,7 @@
     justify-content: center;
     gap: 10px;
 }
+
 
 .button {
     padding: 8px 16px;
@@ -108,4 +115,44 @@ input[type='password'], input[type='email'], input[type='color'], input[type='fi
 
 .button-delete:hover {
     background-color: #d32f2f; /* Darker red for hover state */
+}
+
+/* General enhancements for inputs */
+input[type='email'], input[type='color'], input[type='file'], input[type='password'] {
+    width: 100%;  
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-top: 5px;
+    display: block;  
+}
+.settings.blur {
+    filter: blur(4px);
+}
+
+.modal {
+    position: fixed;
+    top: 50%;
+    left: 62%;
+    transform: translate(-50%, -50%);
+    width: 40%; /* Increase the width of the modal */
+    max-width: 500px; /* Set a max-width for larger screens */
+    padding: 20px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    z-index: 1050; /* High z-index to ensure it's on top */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.modal-content {
+    width: 100%;
+}
+.close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+    font-size: 24px;
 }
