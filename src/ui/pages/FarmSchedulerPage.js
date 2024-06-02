@@ -1,19 +1,16 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Stack from "@mui/material/Stack";
 import { Scheduler } from "@aldabil/react-scheduler";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
-import { DateRangePicker } from "react-date-range";
-import "react-date-range/dist/styles.css"; // main style file
-import "react-date-range/dist/theme/default.css"; // theme css file
 import {
   Button,
   CardActionArea,
   CardActions,
   IconButton,
-  Checkbox,
   Input,
+  TextField,
 } from "@mui/material";
 import "./Farm.css";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward"; // Import the arrow forward icon
@@ -43,6 +40,32 @@ function FarmSchedulerPage() {
   }
 
   const today = new Date();
+
+  // Function to get card color based on status
+  const getCardColor = (event) => {
+    const now = new Date();
+    if (event.start > now) {
+      return "#cce8e6"; // To do
+    } else if (event.start <= now && event.end >= now) {
+      return "#f3b4c3"; // In progress
+    } else {
+      return "#8cc4bd"; // Done
+    }
+  };
+  const getEventStatus = (event) => {
+    const now = new Date();
+    if (event.start > now) {
+      return "To do";
+    } else if (event.start <= now && event.end >= now) {
+      return "In progress";
+    } else {
+      return "Done";
+    }
+  };
+
+
+
+  // Add these events to your EVENTS array
   const EVENTS = [
     {
       event_id: 1,
@@ -50,9 +73,7 @@ function FarmSchedulerPage() {
       start: new Date(new Date(new Date().setHours(9)).setMinutes(0)),
       end: new Date(new Date(new Date().setHours(10)).setMinutes(0)),
       description: "description event1",
-      disabled: true,
       admin_id: [1, 2, 3, 4],
-      color: "#cce8e6",
     },
     {
       event_id: 2,
@@ -61,7 +82,6 @@ function FarmSchedulerPage() {
       end: new Date(new Date(new Date().setHours(12)).setMinutes(0)),
       description: "description event2",
       admin_id: 2,
-      color: "#f3b4c3",
     },
     {
       event_id: 3,
@@ -72,7 +92,6 @@ function FarmSchedulerPage() {
       admin_id: 1,
       editable: false,
       deletable: false,
-      color: "#8cc4bd",
     },
     {
       event_id: 4,
@@ -89,7 +108,6 @@ function FarmSchedulerPage() {
       ),
       admin_id: 2,
       description: "description event4",
-      color: "#b0cdb3",
     },
     {
       event_id: 5,
@@ -107,7 +125,6 @@ function FarmSchedulerPage() {
       description: "description event5",
       admin_id: 2,
       editable: true,
-      color: "#f7fecb",
     },
     {
       event_id: 6,
@@ -119,11 +136,51 @@ function FarmSchedulerPage() {
       ),
       end: new Date(new Date(new Date().setHours(14)).setMinutes(0)),
       description: "description event6",
-      color: "#fed6df",
       admin_id: 2,
     },
-  ];
+    {
+      event_id: 7,
+      title: "Past Event",
+      start: new Date(new Date().setDate(new Date().getDate() - 2)), // 2 days ago
+      end: new Date(new Date().setDate(new Date().getDate() - 2)), // 2 days ago
+      description: "description past event",
+      admin_id: [1, 2, 3, 4],
+    },
+    {
+      event_id: 8,
+      title: "Current Event",
+      start: new Date(new Date().setHours(new Date().getHours() - 7)), // 1 hour ago
+      end: new Date(new Date().setHours(new Date().getHours() + 2)), // 1 hour later
+      description: "description current event",
+      admin_id: 2,
+    },
+    {
+      event_id: 9,
+      title: "Future Event",
+      start: new Date(new Date().setDate(new Date().getDate() + 2)), // 2 days later
+      end: new Date(new Date().setDate(new Date().getDate() + 2)), // 2 days later
+      description: "description future event",
+      admin_id: 1,
+      editable: false,
+      deletable: false,
+    },
+  
 
+  ];
+  
+  const updatedEvents = EVENTS.map(event => ({
+    ...event,
+    color: getCardColor(event)
+  }));
+  
+  // Use useEffect to log the status of each event
+  useEffect(() => {
+    updatedEvents.forEach(event => {
+      console.log(`Event: ${event.title}, Start: ${event.start}, End: ${event.end}, Status: ${getEventStatus(event)}`);
+    });
+  }, [updatedEvents]);
+
+  
   // Modal 1
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
@@ -140,6 +197,8 @@ function FarmSchedulerPage() {
   // Form state and validation
   const [startDateTime, setStartDateTime] = useState('');
   const [endDateTime, setEndDateTime] = useState('');
+  const [title, setTitle] = useState('');
+  const [description, setDescription] = useState('');
   const [error, setError] = useState('');
 
   const extractDateTime = (dateTimeStr) => {
@@ -154,15 +213,15 @@ function FarmSchedulerPage() {
     const { date: startDate, time: startTime } = extractDateTime(newStartDateTime);
     const { date: endDate, time: endTime } = extractDateTime(endDateTime);
 
-    /*if (endDateTime) {
+    if (endDateTime) {
       if (new Date(newStartDateTime) > new Date(endDateTime)) {
-        setError('End Date & Time invalid');
+        setError('End date must be equal or after the start date.');
       } else if (startDate === endDate && startTime >= endTime) {
-        setError('End Date & Time invalid');
+        setError('If the dates are the same, the end time must be after the start time.');
       } else {
         setError('');
       }
-    }*/
+    }
   };
 
   const handleEndDateTimeChange = (e) => {
@@ -174,23 +233,36 @@ function FarmSchedulerPage() {
 
     if (startDateTime) {
       if (new Date(newEndDateTime) < new Date(startDateTime)) {
-        setError('End Date & Time invalid');
-      } else if (startDate == endDate &&  endTime <= startTime) {
-        setError('End Date & Time invalid');
+        setError('End date must be equal or after the start date.');
+      } else if (startDate === endDate && startTime >= endTime) {
+        setError('If the dates are the same, the end time must be after the start time.');
       } else {
         setError('');
       }
     }
   };
 
+  const handleTitleChange = (e) => {
+    setTitle(e.target.value);
+  };
+
+  const handleDescriptionChange = (e) => {
+    setDescription(e.target.value);
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!error && startDateTime && endDateTime) {
+    if (!error && startDateTime && endDateTime && title && description) {
       // Submit form data
-      console.log('Form submitted:', { startDateTime, endDateTime });
+      console.log('Form submitted:', {
+        startDateTime,
+        endDateTime,
+        title,
+        description
+      });
       handleClose(); // Close the modal after submitting
     } else {
-      setError('Please fix the errors before submitting.');
+      setError('Please fill in all fields and fix the errors before submitting.');
     }
   };
 
@@ -295,19 +367,25 @@ function FarmSchedulerPage() {
                       </div>
                     </div>
                   </div>
-                  {error && <div className="text-red-500 text-sm mt-2">{error}</div>}
                   <div className="mb-1 flex flex-col gap-6">
-                    <Input
+                    <TextField
                       size="lg"
-                      placeholder="New Task Title"
+                      label="New Task Title"
+                      value={title}
+                      onChange={handleTitleChange}
+                      variant="outlined"
                       className="!border-t-blue-gray-200 focus:!border-t-white"
                     />
-                    <Input
+                    <TextField
                       size="lg"
-                      placeholder="Description"
+                      label="Description"
+                      value={description}
+                      onChange={handleDescriptionChange}
+                      variant="outlined"
                       className="!border-t-blue-gray-200 focus:!border-t-white"
                     />
                   </div>
+                  {error && <div className="text-red-500 text-sm mt-2">{error}</div>}
                   <div className="absolute top-60 gap-6" style={{
                     display: "flex",
                     justifyContent: "space-between",
@@ -324,7 +402,7 @@ function FarmSchedulerPage() {
               </Box>
             </Modal>
           </Stack>
-          <Scheduler events={EVENTS} />
+          <Scheduler events={updatedEvents} />
         </Stack>
       </Stack>
       <nav
@@ -335,21 +413,21 @@ function FarmSchedulerPage() {
           <p className="font-normal text-center">{currentDate}</p>
         </div>
         <p className="font-bold text-center">today's schedule</p>
-        {EVENTS.map((event) => {
+        {updatedEvents.map((event) => {
           const eventDate = new Date(event.start);
+          const cardColor = event.color;
           if (eventDate.toDateString() === today.toDateString()) {
             return (
               <Card key={event.event_id} className="rounded-3xl"
                 sx={{
                   maxWidth: 400,
                   margin: "10px",
-                  backgroundColor: "white",
+                  backgroundColor: cardColor,
                   overflow: "auto",
                   maxHeight: "300px",
                 }}>
                 <CardActionArea
-                  sx={{ backgroundColor: event.color }}
-                  /* onClick={() => handleCardExpand(event)}*/
+                  sx={{ backgroundColor: cardColor }}
                 >
                   <CardContent>
                     <Typography gutterBottom variant="h5" component="div">
@@ -373,7 +451,6 @@ function FarmSchedulerPage() {
                     size="small"
                     aria-label="go to event"
                     onClick={() => handleOpenCard(event.event_id)}
-                    /* onClick={() => handleCardExpand(event)}*/
                   >
                     <ArrowForwardIcon />
                   </IconButton>
@@ -392,7 +469,7 @@ function FarmSchedulerPage() {
                       transform: "translate(-50%, -50%)",
                       width: 650,
                       height: 450,
-                      backgroundColor: event.color,
+                      backgroundColor: cardColor,
                       boxShadow: 24,
                       p: 4,
                     }}
@@ -411,13 +488,13 @@ function FarmSchedulerPage() {
                         maxWidth: 600,
                         height: 300,
                         margin: "10px",
-                        backgroundColor: event.color,
+                        backgroundColor: cardColor,
                         overflow: "auto",
                         maxHeight: "300px",
                       }}
                     >
                       <CardActionArea
-                        sx={{ backgroundColor: event.color }}
+                        sx={{ backgroundColor: cardColor }}
                       >
                         <CardContent>
                           <Typography gutterBottom variant="h5" component="div">
