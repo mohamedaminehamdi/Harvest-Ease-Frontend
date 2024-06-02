@@ -1,0 +1,80 @@
+.plant-disease-container{
+    width: 95%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin:auto;
+    background: #F2F2F2 ;
+    border-radius: 20px;
+
+
+}
+
+.plant-disease-content{
+    color: #154734;
+   font-weight: 700;
+    font-size: 20px; 
+    text-align: center;
+}
+.plant-disease-container h1{
+    color: #154734;
+   font-weight: 700;
+    font-size:50px;
+}
+.loading h3{
+   font-size: 24px; 
+   color: #154734;
+   font-weight: 700;
+}
+.loading{
+    
+    display: flex;
+    flex-direction: column;
+    gap: 50px;
+    justify-content: center;
+    align-items: center;
+    min-height: 80vh;
+
+}
+.scan{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    
+}
+.scan .scan-content{
+    position: relative;
+    width :300px;
+    height: 300px;
+    background:url('../assets/image1.png');
+    background-size: 300px;
+}
+.scan .scan-content::before{
+    content:'';
+    position: absolute;
+    top: 0;
+    left:0;
+    width:100%;
+    height:100%;
+    background:url('../assets/image.png');
+    background-size: 300px;
+    overflow:hidden;
+    animation: animate 4s ease-in-out  infinite ;
+}
+
+@keyframes animate{
+    0%,100%{
+        height: 0;
+    }
+    50%{
+        height: 100%;
+    }
+}
+
+
+
+    
+    

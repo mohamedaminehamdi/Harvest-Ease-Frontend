@@ -1,0 +1,21 @@
+
+
+.plant_scanner_container{
+    display: grid;
+    grid-template-columns:  1fr 1fr;
+    grid-template-areas: "plantinfo plantdisease";
+    width: 80vw;
+    height: 100%;
+    
+}
+
+.plantdisease{
+    grid-area: plantdisease;
+    border: solid 1px black;
+
+}
+.plantinfo{
+    grid-area: plantinfo;
+    border: solid 1px black;
+
+}

@@ -1,0 +1,33 @@
+
+body{
+    background-color: #D8E4D9;
+}
+
+.tracker_container{
+    display: grid;
+    width: 80vw;
+    height: 100%;
+    margin: auto;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows:1fr 1fr;
+    grid-template-areas:
+    " analysis weather"
+    " monitoring resourcescosts";
+    
+}
+
+.analysis{
+    grid-area: analysis;
+   
+}
+.resourcescosts{
+    grid-area: resourcescosts;
+    
+ }
+.monitoring{
+    grid-area: monitoring;
+    
+ }
+.weather{
+    grid-area: weather;
+}
