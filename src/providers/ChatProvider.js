@@ -3,29 +3,29 @@ import React, { useState, useEffect, createContext } from 'react';
 const ChatContext = createContext();
 
 const ChatProvider = ({ children }) => {
-  const [chatData, setChatData] = useState(() => {
+  const [savedChatData, setSavedChatData] = useState(() => {
     const storedMessages = JSON.parse(localStorage.getItem('messages')) || [];
     return storedMessages;
   });
 
   const deleteMessage = (messageId) => {
-    setChatData(chatData.filter((message) => message.id !== messageId));
+    setSavedChatData(savedChatData.filter((message) => message.id !== messageId));
     console.log('Message deleted:', messageId);
   };
 
   const saveMessage = (message) => {
-    const messageExists = chatData.some((msg) => msg.id === message.id);
+    const messageExists = savedChatData.some((msg) => msg.id === message.id);
     if (!messageExists) {
-      setChatData([...chatData, message]);
+      setSavedChatData([...savedChatData, message]);
     }
   };
 
   useEffect(() => {
-    localStorage.setItem('messages', JSON.stringify(chatData));
-  }, [chatData]);
+    localStorage.setItem('messages', JSON.stringify(savedChatData));
+  }, [savedChatData]);
 
   return (
-    <ChatContext.Provider value={{ chatData, saveMessage, deleteMessage }}>
+    <ChatContext.Provider value={{ savedChatData, saveMessage, deleteMessage }}>
       {children}
     </ChatContext.Provider>
   );

@@ -7,6 +7,10 @@ import { ChatContext } from '../../../providers/ChatProvider';
 function MessageLayout({message}) {
   const [isOpen, setIsOpen] = useState(false);
   const { saveMessage } = useContext(ChatContext);
+  
+
+  
+
 
   const handleNewMessage = () => {
     saveMessage(message);
@@ -43,7 +47,9 @@ function MessageLayout({message}) {
           
           
           
-          {message.content}
+          {
+            message.content
+          }
         </div>
       
     </li>
