@@ -1,9 +1,9 @@
 import React from 'react'
 import './monitring.css'
-import potatoimg from "../assets/potatos.jpg"; 
-import gingerimg from "../assets/ginger.jpg";
-import tomatoimg from "../assets/tomatos.jpg";
-import onionimg from "../assets/onions.jpg";
+import potatoimg from "../../../assets/potatos.jpg"; 
+import gingerimg from "../../../assets/ginger.jpg";
+import tomatoimg from "../../../assets/tomatos.jpg";
+import onionimg from "../../../assets/onions.jpg";
 
 const Monitring = () => {
   return (
