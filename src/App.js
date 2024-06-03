@@ -1,7 +1,7 @@
 import CommunnityPage from "../src/ui/pages/CommunityPage";
 import ChatbotPage from "./ui/pages/ChatbotPage";
 import ChatPage from "./ui/pages/chatpage";
-
+import './App.css';
 import Home from "../src/ui/pages/Home";
 import { Routes, Route } from "react-router-dom";
 import "./App.css";

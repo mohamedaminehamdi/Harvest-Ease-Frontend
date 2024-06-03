@@ -284,8 +284,8 @@ function FarmSchedulerPage() {
         }}
       >
         <Stack
-          sx={{ display: "flex", flexDirection: "column", width: "55%" }}
-          className="py-2 px-10 gap-4 absolute top-5"
+          sx={{ display: "flex", flexDirection: "column", width: "55%",  }}
+          className="py-2 px-10 gap-4 absolute top-5 overflow-auto h-full"
         >
           <p className="font-bold px-10 ">Welcome back user </p>
           <Stack
@@ -295,6 +295,7 @@ function FarmSchedulerPage() {
               width: "100%",
               alignItems: "center",
               justifyContent: "space-between",
+              
             }}
             className="flex justify-between"
           >

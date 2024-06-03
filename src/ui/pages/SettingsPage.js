@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import '../components/SettingsPage.css';  // Ensure CSS is imported
+import '../components/SettingsPage.css'; 
 
 function SettingsPage() {
     const [email, setEmail] = useState('user1234@gmail.com');
@@ -51,7 +51,7 @@ function SettingsPage() {
     };
 
     return (
-        <div className="settings">
+        <div className="settings overflow-auto">
             <div className={showEmailModal || showPicModal || showColorModal ? 'settings-content blur' : 'settings-content'}>
                 <h1>Settings</h1>
                 <div className="setting">
