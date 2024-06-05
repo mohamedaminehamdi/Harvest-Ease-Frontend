@@ -11,12 +11,12 @@ import ChatPage from "../src/ui/pages/ChatbotPage";
 import SavedMessagesPage from "../src/ui/pages/SavedMessagePage";
 import ChatbotPageLayout from "../src/ui/components/chatbot/ChatbotPageLayout";
 import { useSelector } from 'react-redux';
-import Login  from "./ui/pages/login";
+import Login from "./ui/pages/login";
 function App() {
   const isAuth = Boolean(useSelector((state) => state.token));
   const protectedRoute = (element) => {
     if (!isAuth) {
-      return <Navigate to="/login" />;
+      return <Navigate to="/" />;
     }
     return element;
   };
@@ -26,15 +26,15 @@ function App() {
         <Routes>
           <Route exact path="/" element={<Home />} />
           <Route exact path="/login" element={<Login />} />
-          <Route path="/Settings" element={<SettingsPage />} />
-          <Route path="/Farm-scheduler" element={<FarmSchedulerPage />} /> 
-          <Route path="/Resources-tracker" element={<ResourcesTrackerPage />} />
-          <Route path="/Plant-Health-Scanner" element={<PlantHealth />} />
-          <Route path="/Forum" element={<CommunityPage/>} />
-          <Route path="Chatbot" element={<ChatbotPageLayout />}>
-            <Route index element={<ChatPage />} /> 
-            <Route path="Chat" element={<ChatPage />}/>
-            <Route path="Saved-messages" element={<SavedMessagesPage />} />
+          <Route path="/Settings" element={protectedRoute(<SettingsPage />)} />
+          <Route path="/Farm-scheduler" element={protectedRoute(<FarmSchedulerPage />)} />
+          <Route path="/Resources-tracker" element={protectedRoute(<ResourcesTrackerPage />)} />
+          <Route path="/Plant-Health-Scanner" element={protectedRoute(<PlantHealth />)} />
+          <Route path="/Forum" element={protectedRoute(<CommunityPage />)} />
+          <Route path="Chatbot" element={protectedRoute(<ChatbotPageLayout />)}>
+            <Route index element={protectedRoute(<ChatPage />)} />
+            <Route path="Chat" element={protectedRoute(<ChatPage />)} />
+            <Route path="Saved-messages" element={protectedRoute(<SavedMessagesPage />)} />
           </Route>
         </Routes>
       </Layout>
