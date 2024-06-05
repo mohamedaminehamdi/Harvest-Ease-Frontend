@@ -14,45 +14,38 @@ import Login from "./ui/pages/login";
 import { useSelector } from "react-redux";
 function App() {
   const isAuth = Boolean(useSelector((state) => state.token));
+  const protectedRoute = (element) => {
+    if (!isAuth) {
+      return <Navigate to="/login" />;
+    }
+    return element;
+  };
   return (
     <div>
       <Layout>
         <Routes>
           <Route exact path="/" element={<Home />} />
-          <Route
-            path="/Settings"
-            element={isAuth ? <SettingsPage /> : <Navigate to="/login" />}
-          />
+          <Route path="/Settings" element={protectedRoute(<SettingsPage />)} />
           <Route path="/login" element={<Login />} />
           <Route
             path="/Farm-scheduler"
-            element={isAuth ? <FarmSchedulerPage /> : <Navigate to="/login" />}
+            element={protectedRoute(<FarmSchedulerPage />)}
           />
           <Route
             path="/Resources-tracker"
-            element={
-              isAuth ? <ResourcesTrackerPage /> : <Navigate to="/login" />
-            }
+            element={protectedRoute(<ResourcesTrackerPage />)}
           />
           <Route
             path="/Plant-Health-Scanner"
-            element={isAuth ? <PlantHealth /> : <Navigate to="/login" />}
+            element={protectedRoute(<PlantHealth />)}
           />
-          <Route
-            path="/Forum"
-            element={isAuth ? <CommunityPage /> : <Navigate to="/login" />}
-          />
-          <Route
-            path="Chatbot"
-            element={isAuth ? <ChatbotPageLayout /> : <Navigate to="/login" />}
-          >
+          <Route path="/Forum" element={protectedRoute(<CommunityPage />)} />
+          <Route path="Chatbot" element={protectedRoute(<ChatbotPageLayout />)}>
             <Route index element={<ChatPage />} />
             <Route path="Chat" element={<ChatPage />} />
             <Route
               path="Saved-messages"
-              element={
-                isAuth ? <SavedMessagesPage /> : <Navigate to="/login" />
-              }
+              element={protectedRoute(<SavedMessagesPage />)}
             />
           </Route>
         </Routes>
