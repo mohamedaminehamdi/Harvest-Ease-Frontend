@@ -7,7 +7,7 @@ import CreatePost from "../components/Forum/CreatePost";
 function CommunityPage() {
   return (
     <>
-      <div className="flex justify-around">
+      <div className="flex justify-around overflow-auto">
         <div className="flex flex-col flex-auto justify-center items-center ml-3">
           <CreatePost />
           <Feed />

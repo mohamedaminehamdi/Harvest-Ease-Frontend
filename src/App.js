@@ -1,13 +1,17 @@
-import Home from "./ui/pages/Home";
+
 import ResourcesTrackerPage from "./ui/pages/ResourcesTrackerPage";
 import PlantHealth from "./ui/pages/PlantHealth";
 import { Routes, Route, Navigate } from "react-router-dom";
 import FarmSchedulerPage from "./ui/pages/FarmSchedulerPage";
+
+import ChatPage from "./ui/pages/chatpage";
+import './App.css';
+import Home from "../src/ui/pages/Home";
+
 import "./App.css";
 import Layout from "../src/ui/components/Layout";
 import SettingsPage from "../src/ui/pages/SettingsPage";
 import CommunityPage from "../src/ui/pages/CommunityPage";
-import ChatPage from "../src/ui/pages/ChatbotPage";
 import SavedMessagesPage from "../src/ui/pages/SavedMessagePage";
 import ChatbotPageLayout from "../src/ui/components/chatbot/ChatbotPageLayout";
 import { useSelector } from 'react-redux';

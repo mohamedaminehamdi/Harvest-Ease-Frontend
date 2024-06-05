@@ -1,11 +1,12 @@
 import React from 'react';
 import Sidebar from '../components/Sidebar/Sidebar';
+import '../components/Layout.css'
 
 function Layout({ children }) {
   return (
-    <div className="flex min-h-screen">
+    <div className="flex h-screen w-screen">
       <Sidebar />
-      <main className="flex-1 flex flex-col w-full h-screen ">
+      <main className="flex-1 flex flex-col w-full">
   {children}
 </main>
     </div>
