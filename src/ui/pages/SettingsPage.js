@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 import '../components/SettingsPage.css';  // Ensure CSS is imported
 
 function SettingsPage() {
@@ -15,12 +16,46 @@ function SettingsPage() {
     const [confirmPassword, setConfirmPassword] = useState('');
     const [showPasswordChange, setShowPasswordChange] = useState(false);
 
-    const handleEmailChange = (e) => {
+    const handleEmailChange = async (e) => {
         e.preventDefault();
-        setEmail(newEmail);  // Update email state with the new email
-        alert('Email successfully updated!');
-        setShowEmailModal(false);
+
+        try {
+            const userId = '665fb5934eb13b9930ce5297'; // Replace with the actual user ID
+            const response = await axios.put(`http://127.0.0.1:3000/settings/users/${userId}/email`, {
+                newEmail,
+            });
+
+            if (response.status === 200) {
+                setEmail(newEmail);  // Update email state with the new email
+                alert('Email successfully updated!');
+                setShowEmailModal(false);
+            }
+        } catch (error) {
+            alert('Error updating email: ' + error.response.data.error);
+        }
     };
+    const handlePasswordChange = async (e) => {
+        e.preventDefault();
+        if (newPassword !== confirmPassword) {
+            alert("New passwords do not match!");
+            return;
+        }
+
+        try {
+            const userId = '665fb5934eb13b9930ce5297'; // Replace with the actual user ID
+            const response = await axios.put(`http://127.0.0.1:3000/users/${userId}`, {
+                newPassword,
+            });
+
+            if (response.status === 200) {
+                alert('Password successfully updated!');
+                setShowPasswordChange(false);
+            }
+        } catch (error) {
+            alert('Error updating password: ' + error.response.data.error);
+        }
+    };
+    
 
     const handleProfilePicChange = (e) => {
         const file = e.target.files[0];
@@ -38,16 +73,6 @@ function SettingsPage() {
 
     const confirmColorChange = () => {
         setShowColorModal(false); // Close modal after confirming color change
-    };
-
-    const handlePasswordChange = (e) => {
-        e.preventDefault();
-        if (newPassword !== confirmPassword) {
-            alert("New passwords do not match!");
-            return;
-        }
-        alert('Password successfully updated!');
-        setShowPasswordChange(false);
     };
 
     return (

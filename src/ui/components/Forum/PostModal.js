@@ -18,6 +18,7 @@ const PostModal = ({ setShowModal }) => {
 
       if (response.status === 201) { // Check for successful creation (201 Created)
         console.log("Post created successfully:", response.data);
+        window.location.reload();
         setShowModal(false) // Optional: log response
       } else {
         console.error("Error creating post:", response.status); // Handle other status codes

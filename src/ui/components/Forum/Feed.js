@@ -13,27 +13,32 @@ const Feed = () => {
   const [followingVisible, setFollowingVisible] = useState(false);
   const [posts, setPosts] = useState([]);
 
+
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        const response = await axios.get("http://127.0.0.1:3000/Forum/tweets");
+        const response = await axios.get("http://localhost:3000/Forum/tweets");
         const postsData = response.data;
 
-        // Combine posts with user names
-        const combinedPosts = postsData.map(post => ({
-          content: post.content,
-          created: post.created,
-          user:"ahmed" , // Assuming 'ownerId' is populated with user details
-          likes: post.likes || 0,
-          comments: post.comments || []
+        // Fetch user names for each post
+        const postsWithNames = await Promise.all(postsData.map(async post => {
+          const userDetailsResponse = await axios.get(`http://localhost:3000/users/${post.owner}`);
+          const userName = userDetailsResponse.data.name;
+
+          return {
+            content: post.content,
+            created: post.created,
+            user: userName,
+            likes: post.likes || 0,
+            comments: post.comments || []
+          };
         }));
 
-        setPosts(combinedPosts);
+        setPosts(postsWithNames);
       } catch (error) {
         console.error("Error fetching posts:", error);
       }
     };
-
     fetchPosts();
   }, []);
 
