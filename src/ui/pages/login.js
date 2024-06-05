@@ -10,12 +10,12 @@ function Login() {
         const email = event.target.email.value;
         const password = event.target.password.value;
 
-        axios.post('http://localhost:3000/auth/login', {
+        axios.post('http://localhost:5000/api/auth/login', {
             email,
             password
         })
         .then(response => {
-            console.log(response.data);  
+            console.log(response.data);
             if (response.data.token) {
                 localStorage.setItem('token', response.data.token);
             }
@@ -28,8 +28,7 @@ function Login() {
         const name = event.target.name.value;
         const email = event.target.email.value;
         const password = event.target.password.value;
-
-        axios.post('http://localhost:3000/auth/register', {
+        axios.post('http://localhost:5000/api/auth/register', {
             name,
             email,
             password
@@ -42,7 +41,7 @@ function Login() {
 
     return (
         <Components.Container>
-            <Components.SignUpContainer signinIn={!signIn}>
+            <Components.SignUpContainer signinIn={true}>
                 <Components.Form onSubmit={handleRegister}>
                     <Components.Title>Create Account</Components.Title>
                     <Components.Input type='text' name='name' placeholder='Name' />
