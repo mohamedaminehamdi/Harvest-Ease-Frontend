@@ -10,13 +10,13 @@ import CommunityPage from "../src/ui/pages/CommunityPage";
 import ChatPage from "../src/ui/pages/ChatbotPage";
 import SavedMessagesPage from "../src/ui/pages/SavedMessagePage";
 import ChatbotPageLayout from "../src/ui/components/chatbot/ChatbotPageLayout";
-import { useSelector } from 'react-redux';
-import Login from "./ui/pages/login";
+import { useSelector } from "react-redux";
+import Login from "./ui/pages/Login";
 function App() {
-  const isAuth = Boolean(useSelector((state) => state.token));
+  const isAuth = Boolean(useSelector((state) => state.auth.token));
   const protectedRoute = (element) => {
     if (!isAuth) {
-      return <Navigate to="/" />;
+      return <Navigate to="/login" />;
     }
     return element;
   };
@@ -26,15 +26,27 @@ function App() {
         <Routes>
           <Route exact path="/" element={<Home />} />
           <Route exact path="/login" element={<Login />} />
-          <Route path="/Settings" element={/* protectedRoute */(<SettingsPage />)} />
-          <Route path="/Farm-scheduler" element={/* protectedRoute */(<FarmSchedulerPage />)} />
-          <Route path="/Resources-tracker" element={/* protectedRoute */(<ResourcesTrackerPage />)} />
-          <Route path="/Plant-Health-Scanner" element={/* protectedRoute */(<PlantHealth />)} />
-          <Route path="/Forum" element={/* protectedRoute */(<CommunityPage />)} />
-          <Route path="Chatbot" element={/* protectedRoute */(<ChatbotPageLayout />)}>
-            <Route index element={/* protectedRoute */(<ChatPage />)} />
-            <Route path="Chat" element={/* protectedRoute */(<ChatPage />)} />
-            <Route path="Saved-messages" element={/* protectedRoute */(<SavedMessagesPage />)} />
+          <Route path="/Settings" element={protectedRoute(<SettingsPage />)} />
+          <Route
+            path="/Farm-scheduler"
+            element={protectedRoute(<FarmSchedulerPage />)}
+          />
+          <Route
+            path="/Resources-tracker"
+            element={protectedRoute(<ResourcesTrackerPage />)}
+          />
+          <Route
+            path="/Plant-Health-Scanner"
+            element={protectedRoute(<PlantHealth />)}
+          />
+          <Route path="/Forum" element={protectedRoute(<CommunityPage />)} />
+          <Route path="Chatbot" element={protectedRoute(<ChatbotPageLayout />)}>
+            <Route index element={protectedRoute(<ChatPage />)} />
+            <Route path="Chat" element={protectedRoute(<ChatPage />)} />
+            <Route
+              path="Saved-messages"
+              element={protectedRoute(<SavedMessagesPage />)}
+            />
           </Route>
         </Routes>
       </Layout>
