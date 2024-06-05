@@ -15,10 +15,10 @@ function Sidebar() {
 
   return (
     <nav
-      className={`flex-col h-full ${
-        isSidebarOpen ? "bg-darkGrey w-1/4 px-7 overflow-visible" : "w-10 px-1 bg-darkBlue overflow-hidden"
+      className={`flex-col h-full bg-blue-400 ${
+        isSidebarOpen ? "bg-darkGrey w-1/4 px-7 " : "w-10 px-1 bg-darkBlue overflow-hidden"
       } relative`}
-      style={{ height: '100vh' }}
+      
     >
       <button
         className={`rounded-full size-7 items-center absolute top-2 ${
@@ -36,8 +36,8 @@ function Sidebar() {
       </button>
       {isSidebarOpen && <img src={Logo} alt="logo" className="flex p-5" />}
       <ul
-        className={`place-content-center flex-col font-bold text-xs text-darkBlue ${
-          isSidebarOpen ? "mt-6" : "mt-3"
+        className={`h-1/2 place-content-start flex-col font-bold text-xs text-darkBlue ${
+          isSidebarOpen ? "" : "mt-3"
         }`}
       >
         {SideBarData.map((val, key) => {
@@ -47,18 +47,18 @@ function Sidebar() {
                 to={val.link}
                 className={({ isActive }) => {
                   if (isActive && isSidebarOpen) {
-                    return "bg-pastelGreen rounded-full h-9 p-1.5";
+                    return "bg-pastelGreen rounded-full h-9";
                   } else if (!isActive && isSidebarOpen) {
-                    return "hover:bg-gray-500 hover:text-pastelGreen rounded-full h-9 p-1.5";
+                    return "hover:bg-gray-500 hover:text-pastelGreen rounded-full h-9";
                   } else if (isActive && !isSidebarOpen) {
-                    return "bg-pastelGreen text-white rounded-full h-9 p-1.5";
+                    return "bg-pastelGreen text-white rounded-full h-9";
                   } else {
-                    return "hover:bg-gray-500 text-white rounded-full h-9 p-1.5";
+                    return "hover:bg-gray-500 text-white rounded-full h-4 px-2";
                   }
                 }}
               >
                 {isSidebarOpen ? (
-                  <span className="inline-block h-4 justify-center pt-1 pb-5 px-3 mt-3">
+                  <span className="inline-block px-2 justify-center  mt-3">
                     {val.title}
                   </span>
                 ) : (

@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
+import axios from "axios";
 import Stack from "@mui/material/Stack";
 import { Scheduler } from "@aldabil/react-scheduler";
 import Card from "@mui/material/Card";
@@ -63,122 +65,40 @@ function FarmSchedulerPage() {
     }
   };
 
+  const user = useSelector((state) => state.user);
+  const [events, setEvents] = useState([]);
 
 
-  // Add these events to your EVENTS array
-  const EVENTS = [
-    {
-      event_id: 1,
-      title: "Event 1",
-      start: new Date(new Date(new Date().setHours(9)).setMinutes(0)),
-      end: new Date(new Date(new Date().setHours(10)).setMinutes(0)),
-      description: "description event1",
-      admin_id: [1, 2, 3, 4],
-    },
-    {
-      event_id: 2,
-      title: "Event 2",
-      start: new Date(new Date(new Date().setHours(10)).setMinutes(0)),
-      end: new Date(new Date(new Date().setHours(12)).setMinutes(0)),
-      description: "description event2",
-      admin_id: 2,
-    },
-    {
-      event_id: 3,
-      title: "Event 3",
-      start: new Date(new Date(new Date().setHours(11)).setMinutes(0)),
-      end: new Date(new Date(new Date().setHours(12)).setMinutes(0)),
-      description: "description event3",
-      admin_id: 1,
-      editable: false,
-      deletable: false,
-    },
-    {
-      event_id: 4,
-      title: "Event 4",
-      start: new Date(
-        new Date(new Date(new Date().setHours(9)).setMinutes(30)).setDate(
-          new Date().getDate() - 2
-        )
-      ),
-      end: new Date(
-        new Date(new Date(new Date().setHours(11)).setMinutes(0)).setDate(
-          new Date().getDate() - 2
-        )
-      ),
-      admin_id: 2,
-      description: "description event4",
-    },
-    {
-      event_id: 5,
-      title: "Event 5",
-      start: new Date(
-        new Date(new Date(new Date().setHours(10)).setMinutes(30)).setDate(
-          new Date().getDate() - 2
-        )
-      ),
-      end: new Date(
-        new Date(new Date(new Date().setHours(14)).setMinutes(0)).setDate(
-          new Date().getDate() - 2
-        )
-      ),
-      description: "description event5",
-      admin_id: 2,
-      editable: true,
-    },
-    {
-      event_id: 6,
-      title: "Event 6",
-      start: new Date(
-        new Date(new Date(new Date().setHours(10)).setMinutes(30)).setDate(
-          new Date().getDate() - 4
-        )
-      ),
-      end: new Date(new Date(new Date().setHours(14)).setMinutes(0)),
-      description: "description event6",
-      admin_id: 2,
-    },
-    {
-      event_id: 7,
-      title: "Past Event",
-      start: new Date(new Date().setDate(new Date().getDate() - 2)), // 2 days ago
-      end: new Date(new Date().setDate(new Date().getDate() - 2)), // 2 days ago
-      description: "description past event",
-      admin_id: [1, 2, 3, 4],
-    },
-    {
-      event_id: 8,
-      title: "Current Event",
-      start: new Date(new Date().setHours(new Date().getHours() - 7)), // 1 hour ago
-      end: new Date(new Date().setHours(new Date().getHours() + 2)), // 1 hour later
-      description: "description current event",
-      admin_id: 2,
-    },
-    {
-      event_id: 9,
-      title: "Future Event",
-      start: new Date(new Date().setDate(new Date().getDate() + 2)), // 2 days later
-      end: new Date(new Date().setDate(new Date().getDate() + 2)), // 2 days later
-      description: "description future event",
-      admin_id: 1,
-      editable: false,
-      deletable: false,
-    },
-  
-
-  ];
-  
-  const updatedEvents = EVENTS.map(event => ({
-    ...event,
-    color: getCardColor(event)
-  }));
-  
-  // Use useEffect to log the status of each event
   useEffect(() => {
-    updatedEvents.forEach(event => {
-      console.log(`Event: ${event.title}, Start: ${event.start}, End: ${event.end}, Status: ${getEventStatus(event)}`);
+    fetchEvents();
+  }, []);
+
+  const fetchEvents = async () => {
+    try {
+      const response = await axios.get("http://localhost:5000/Farm-scheduler/events", {
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+        },
+      });
+      const fetchedEvents = response.data.events.map((event) => ({
+        ...event,
+        title: event.title,
+        description : event.description,
+        start: new Date(event.startTime),
+        end: new Date(event.endTime),
+        color: getCardColor(event),
+      }));
+      setEvents(fetchedEvents);
+    } catch (error) {
+      console.error("Error fetching events:", error);
+    }
+  };
+
+  useEffect(() => {
+    events.forEach(event => {
+      console.log(`Event: ${event.title},description:${event.description}, Start: ${event.start}, End: ${event.end}, Status: ${getEventStatus(event)}`);
     });
-  }, [updatedEvents]);
+  }, [events]);
 
   
   // Modal 1
@@ -188,7 +108,7 @@ function FarmSchedulerPage() {
 
   // Modal 2
   const [selectedEventId, setSelectedEventId] = React.useState(null);
-  const handleOpenCard = (eventId) => setSelectedEventId(eventId);
+  const handleOpenCard = (id) => setSelectedEventId(id);
   const handleCloseCard = () => setSelectedEventId(null);
 
   // Date
@@ -250,21 +170,51 @@ function FarmSchedulerPage() {
     setDescription(e.target.value);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log("Submitting form");
+    console.log("Start DateTime:", startDateTime);
+    console.log("End DateTime:", endDateTime);
+    console.log("Title:", title);
+    console.log("Description:", description);
+
     if (!error && startDateTime && endDateTime && title && description) {
-      // Submit form data
-      console.log('Form submitted:', {
-        startDateTime,
-        endDateTime,
-        title,
-        description
-      });
-      handleClose(); // Close the modal after submitting
+      try {
+        const newEvent = {
+          title,
+          description,
+          startTime: new Date(startDateTime),
+          endTime: new Date(endDateTime),
+        };
+
+        const response = await axios.post("http://localhost:5000/Farm-scheduler/add-event", newEvent, {
+          headers: {
+            Authorization: `Bearer ${user.token}`,
+          },
+        });
+
+        setEvents((prevEvents) => [
+          ...prevEvents,
+          {
+            ...response.data.event,
+            start: new Date(response.data.event.startTime),
+            end: new Date(response.data.event.endTime),
+            color: getCardColor(response.data.event),
+          },
+        ]);
+
+        console.log("Event added:", response.data.event);
+        handleClose(); // Close the modal after submitting
+      } catch (error) {
+        console.error("Error adding event:", error);
+        setError("Failed to add event. Please try again.");
+      }
     } else {
-      setError('Please fill in all fields and fix the errors before submitting.');
+      setError("Please fill in all fields and fix the errors before submitting.");
+      console.log("Form errors:", error);
     }
   };
+
 
   return (
     <Stack
@@ -284,8 +234,8 @@ function FarmSchedulerPage() {
         }}
       >
         <Stack
-          sx={{ display: "flex", flexDirection: "column", width: "55%" }}
-          className="py-2 px-10 gap-4 absolute top-5"
+          sx={{ display: "flex", flexDirection: "column", width: "55%",  }}
+          className="py-2 px-10 gap-4 absolute top-5 overflow-auto h-full"
         >
           <p className="font-bold px-10 ">Welcome back user </p>
           <Stack
@@ -295,6 +245,7 @@ function FarmSchedulerPage() {
               width: "100%",
               alignItems: "center",
               justifyContent: "space-between",
+              
             }}
             className="flex justify-between"
           >
@@ -389,7 +340,7 @@ function FarmSchedulerPage() {
                   <div className="absolute top-60 gap-6" style={{
                     display: "flex",
                     justifyContent: "space-between",
-                    marginTop: "35px"
+                    marginTop: "80px"
                   }}>
                     <button className="bg-white hover:bg-gray-100 text-gray-600 font-semibold py-2 px-4 border border-gray-400 rounded shadow">
                       cancel{" "}
@@ -402,7 +353,7 @@ function FarmSchedulerPage() {
               </Box>
             </Modal>
           </Stack>
-          <Scheduler events={updatedEvents} />
+          <Scheduler events={events} />
         </Stack>
       </Stack>
       <nav
@@ -413,7 +364,7 @@ function FarmSchedulerPage() {
           <p className="font-normal text-center">{currentDate}</p>
         </div>
         <p className="font-bold text-center">today's schedule</p>
-        {updatedEvents.map((event) => {
+        {events.map((event) => {
           const eventDate = new Date(event.start);
           const cardColor = event.color;
           if (eventDate.toDateString() === today.toDateString()) {
@@ -443,20 +394,20 @@ function FarmSchedulerPage() {
                   <Button
                     size="small"
                     sx={{ color: "black", fontWeight: "bold" }}
-                    onClick={() => handleOpenCard(event.event_id)}
+                    onClick={() => handleOpenCard(event._id)}
                   >
                     {event.title}
                   </Button>
                   <IconButton
                     size="small"
                     aria-label="go to event"
-                    onClick={() => handleOpenCard(event.event_id)}
+                    onClick={() => handleOpenCard(event._id)}
                   >
                     <ArrowForwardIcon />
                   </IconButton>
                 </CardActions>
                 <Modal
-                  open={selectedEventId === event.event_id}
+                  open={selectedEventId === event._id}
                   onClose={handleCloseCard}
                   aria-labelledby="modal-modal-title"
                   aria-describedby="modal-modal-description"
