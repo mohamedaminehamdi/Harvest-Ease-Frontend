@@ -1,7 +1,31 @@
 import React, { useState } from "react";
-
+import axios from 'axios'
 const PostModal = ({ setShowModal }) => {
   const [postContent, setPostContent] = useState("");
+  const handlePostSubmit = async () => {
+    if (!postContent) {
+      // Handle empty content (optional: display error message)
+      return;
+    }
+
+    const ownerId = "6659ca33a44cf2c889c7019e"; // Replace with logic to get owner ID
+
+    try {
+      const response = await axios.post("http://127.0.0.1:3000/Forum/tweets", {
+        content: postContent,
+        ownerId,
+      });
+
+      if (response.status === 201) { // Check for successful creation (201 Created)
+        console.log("Post created successfully:", response.data);
+        setShowModal(false) // Optional: log response
+      } else {
+        console.error("Error creating post:", response.status); // Handle other status codes
+      }
+    } catch (error) {
+      console.error("Error sending post request:", error); // Handle network errors
+    }
+  };
   return (
     <div className="fixed z-10 inset-0">
       <div className="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
@@ -30,12 +54,14 @@ const PostModal = ({ setShowModal }) => {
             </div>
           </div>
           <div className="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
-            <button
-              type="button"
-              className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-green-600 text-base font-medium text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 sm:ml-3 sm:w-auto sm:text-sm"
-            >
-              Post
-            </button>
+            
+<button
+  type="button"
+  className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-green-600 text-base font-medium text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 sm:ml-3 sm:w-auto sm:text-sm"
+  onClick={handlePostSubmit} // Call handlePostSubmit on button click
+>
+  Post
+</button>
             <button
               onClick={() => setShowModal(false)}
               type="button"

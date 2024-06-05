@@ -1,57 +1,42 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faThumbsUp, faComment } from "@fortawesome/free-solid-svg-icons"; // Importing required FontAwesome icons
-import Ahmed from "../../../assets/ahmed.jpg";
-import Bouden from "../../../assets/bouden.jpg";
-import Su from "../../../assets/su.jpg";
-import Comments from "./comments"; // Importing the Comments component
-import FollowingList from "./FollowingList"; // Importing the FollowingList component
+import { faThumbsUp, faComment } from "@fortawesome/free-solid-svg-icons";
+import Comments from "./comments";
+import FollowingList from "./FollowingList";
 
 const Feed = () => {
-  const dummyPosts = [
-    {
-      user: "Ahmed",
-      image: Ahmed,
-      content: "Hello everyone. I need help with my plants",
-      created: "2h ago",
-      likes: 10,
-      comments: [
-        { user: "John", text: "I can help you with that." },
-        { user: "Emma", text: "Have you tried changing the soil?" },
-      ],
-    },
-    {
-      user: "boudrenski",
-      image: Bouden,
-      content:
-        "Hello, everyone. is there anyone who has knowledge on edible flowers?",
-      created: "2d ago",
-      likes: 2,
-      comments: [
-        { user: "Alice", text: "Yes, I know a lot about edible flowers." },
-        { user: "Bob", text: "You can try researching on XYZ website." },
-      ],
-    },
-    {
-      user: "sumaya",
-      image: Su,
-      content: "My plants aren't growing. Can anyone help me?",
-      created: "43m ago",
-      likes: 15,
-      comments: [
-        { user: "Eva", text: "What type of plants are you growing?" },
-        { user: "Adam", text: "Have you tried giving them more sunlight?" },
-      ],
-    },
-  ];
-
   const [selected, setSelected] = useState("for you");
   const [commentsVisible, setCommentsVisible] = useState(false);
   const [selectedComments, setSelectedComments] = useState([]);
-  const [commenterImages] = useState([Ahmed, Bouden, Su]); // Assuming commenter images are the same as post images
+  const [commenterImages] = useState([]);
   const [followingVisible, setFollowingVisible] = useState(false);
+  const [posts, setPosts] = useState([]);
 
-  // Function to toggle comments visibility
+  useEffect(() => {
+    const fetchPosts = async () => {
+      try {
+        const response = await axios.get("http://127.0.0.1:3000/Forum/tweets");
+        const postsData = response.data;
+
+        // Combine posts with user names
+        const combinedPosts = postsData.map(post => ({
+          content: post.content,
+          created: post.created,
+          user:"ahmed" , // Assuming 'ownerId' is populated with user details
+          likes: post.likes || 0,
+          comments: post.comments || []
+        }));
+
+        setPosts(combinedPosts);
+      } catch (error) {
+        console.error("Error fetching posts:", error);
+      }
+    };
+
+    fetchPosts();
+  }, []);
+
   const toggleComments = (comments) => {
     setSelectedComments(comments);
     setCommentsVisible(!commentsVisible);
@@ -75,7 +60,7 @@ const Feed = () => {
             }`}
             onClick={() => {
               setSelected("following");
-              setFollowingVisible(true); // Show following list when "Following" is clicked
+              setFollowingVisible(true);
             }}
           >
             Following
@@ -93,29 +78,22 @@ const Feed = () => {
             scrollbarColor: "pastelYellow pastelYellow",
           }}
         >
-          {dummyPosts.map((post, index) => (
+          {posts.map((post, index) => (
             <div key={index} className="bg-white p-4 rounded-lg shadow-md mb-4">
               <div className="flex items-center mb-2">
-                <img
-                  src={post.image}
-                  alt="user avatar"
-                  className="w-10 h-10 rounded-full mr-2"
-                />
                 <span className="text-gray-700 font-semibold">{post.user}</span>
               </div>
               <p className="text-gray-800">{post.content}</p>
               <div className="flex items-center justify-between mt-2">
                 <span className="text-gray-600">{post.created}</span>
                 <div className="flex items-center">
-                  {/* Like button */}
                   <button className="mr-4 flex items-center text-gray-600">
                     <FontAwesomeIcon icon={faThumbsUp} className="mr-1" />
                     {post.likes} Likes
                   </button>
-                  {/* Comment button */}
                   <button
                     className="flex items-center text-gray-600"
-                    onClick={() => toggleComments(post.comments)}
+                    onClick={() => toggleComments(post.comments.content)}
                   >
                     <FontAwesomeIcon icon={faComment} className="mr-1" />
                     {post.comments.length} Comments
@@ -127,7 +105,6 @@ const Feed = () => {
         </div>
       </div>
 
-      {/* Render Comments component when visible */}
       {commentsVisible && (
         <Comments
           comments={selectedComments}
@@ -137,7 +114,6 @@ const Feed = () => {
         />
       )}
 
-      {/* Render FollowingList component when visible */}
       {followingVisible && (
         <FollowingList onClose={() => setFollowingVisible(false)} />
       )}

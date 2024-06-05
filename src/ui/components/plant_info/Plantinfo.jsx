@@ -11,8 +11,7 @@ const Plantinfo = () => {
     plant_name: "",
     plant_family: "",
   });
-
-  const url = "YOUR_API_URL_HERE";
+  const url = "http://127.0.0.1:5000/predict";
 
   function handleChange(e) {
     const newData = { ...data };
@@ -28,23 +27,29 @@ const Plantinfo = () => {
       reader.onloadend = () => {
         const base64Image = reader.result.replace(/^data:image\/(png|jpg|jpeg);base64,/, "");
         Axios.post(url, {
-          name: data.plant_name,
-          family: data.plant_family,
-          image: base64Image
+          image: base64Image,
+          plant_name: data.plant_name,
+          plant_family: data.plant_family
         })
         .then((res) => {
-          console.log(res);
+          console.log(res.data);
+          window.location.reload(); // Refresh the page
         })
         .catch((error) => {
           console.error("There was an error uploading the image!", error);
         });
       };
+      reader.onerror = (error) => {
+        console.error("There was an error reading the file!", error);
+      };
+    } else {
+      console.error("No image selected");
     }
   }
 
   return (
     <div className='plant_info_container'>
-      <form className='form_plant-info' onSubmit={handleApi} >
+      <form className='form_plant-info' onSubmit={handleApi}>
         <section className='form_plant-img' onClick={() => document.querySelector('.img-input').click()}>
           <input
             type="file"
@@ -54,8 +59,8 @@ const Plantinfo = () => {
             className='img-input'
             hidden
             onChange={({ target: { files } }) => {
-              files[0] && setImgUrl(files[0].name);
-              if (files) {
+              if (files.length > 0) {
+                setImgUrl(files[0].name);
                 setImage(files[0]);
               }
             }}
@@ -89,14 +94,6 @@ const Plantinfo = () => {
             value={data.plant_name}
             type="text"
             placeholder="Enter Plant Name"
-          />
-          <h3>Plant Family</h3>
-          <input
-            onChange={handleChange}
-            id='plant_family'
-            value={data.plant_family}
-            type="text"
-            placeholder="Enter Plant Family"
           />
         </section>
         <button type="submit">Submit</button>
