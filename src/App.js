@@ -10,7 +10,8 @@ import CommunityPage from "../src/ui/pages/CommunityPage";
 import ChatPage from "../src/ui/pages/ChatbotPage";
 import SavedMessagesPage from "../src/ui/pages/SavedMessagePage";
 import ChatbotPageLayout from "../src/ui/components/chatbot/ChatbotPageLayout";
-
+import { useSelector } from 'react-redux';
+import Login  from "./ui/pages/login";
 function App() {
   const isAuth = Boolean(useSelector((state) => state.token));
   const protectedRoute = (element) => {
@@ -24,6 +25,7 @@ function App() {
       <Layout>
         <Routes>
           <Route exact path="/" element={<Home />} />
+          <Route exact path="/login" element={<Login />} />
           <Route path="/Settings" element={<SettingsPage />} />
           <Route path="/Farm-scheduler" element={<FarmSchedulerPage />} /> 
           <Route path="/Resources-tracker" element={<ResourcesTrackerPage />} />
