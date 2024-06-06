@@ -152,7 +152,7 @@ function SettingsPage() {
         <div className="setting center-content">
           <label>Profile Picture</label>
           <img
-            src={`http://localhost:3000/public/assets/${picturePath}`}
+            src={`http://localhost:3000/assets/${picturePath}`}
             alt="Profile"
             style={{ width: "100px", height: "100px", borderRadius: "50%" }}
           />
