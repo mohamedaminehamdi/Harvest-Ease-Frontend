@@ -66,7 +66,7 @@ function FarmSchedulerPage() {
   };
 
   const user = useSelector((state) => state.user);
-  const [events, setEvents] = useState([]);
+  const [events, setEvents] = React.useState([]);
 
 
   useEffect(() => {
@@ -75,6 +75,10 @@ function FarmSchedulerPage() {
 
   const fetchEvents = async () => {
     try {
+      if (!user || !user.token) {
+        console.error("User token is not available");
+        return;
+      }
       const response = await axios.get("http://localhost:5000/Farm-scheduler/events", {
         headers: {
           Authorization: `Bearer ${user.token}`,
@@ -180,6 +184,11 @@ function FarmSchedulerPage() {
 
     if (!error && startDateTime && endDateTime && title && description) {
       try {
+        if (!user || !user.token) {
+          console.error("User token is not available");
+          return;
+        }
+
         const newEvent = {
           title,
           description,
@@ -215,6 +224,13 @@ function FarmSchedulerPage() {
     }
   };
 
+  const handleCancel = () => {
+    setTitle('');
+    setDescription('');
+    setStartDateTime('');
+    setEndDateTime('');
+    setError('');
+  };
 
   return (
     <Stack
@@ -341,7 +357,7 @@ function FarmSchedulerPage() {
                     justifyContent: "space-between",
                     marginTop: "80px"
                   }}>
-                    <button className="bg-white hover:bg-gray-100 text-gray-600 font-semibold py-2 px-4 border border-gray-400 rounded shadow">
+                    <button onClick={handleCancel} className="bg-white hover:bg-gray-100 text-gray-600 font-semibold py-2 px-4 border border-gray-400 rounded shadow">
                       cancel{" "}
                     </button>
                     <button type="submit" className="bg-white hover:bg-gray-100 text-gray-600 font-semibold py-2 px-4 border border-gray-400 rounded shadow">
