@@ -6,7 +6,7 @@ import { Ressources } from "../Containers";
 
 const ResourcesTrackerPage = () => {
   return (
-    <div className="page_container">
+    <div className="page_container overflow-auto">
 
       <div className="analysis">
         <Ressources />
