@@ -65,9 +65,9 @@ function FarmSchedulerPage() {
     }
   };
 
-  const user = useSelector((state) => state.user);
+  /*const user = useSelector((state) => state.user);*/
   const [events, setEvents] = React.useState([]);
-
+  const token = useSelector((state) => state.auth.token); 
 
   useEffect(() => {
     fetchEvents();
@@ -75,13 +75,13 @@ function FarmSchedulerPage() {
 
   const fetchEvents = async () => {
     try {
-      if (!user || !user.token) {
-        console.error("User token is not available");
+      if (!token) {
+        console.error(" token is not available");
         return;
       }
-      const response = await axios.get("http://localhost:5000/Farm-scheduler/events", {
+      const response = await axios.get("http://localhost:3000/Farm-scheduler/events", {
         headers: {
-          Authorization: `Bearer ${user.token}`,
+          Authorization: `Bearer ${token}`,
         },
       });
       const fetchedEvents = response.data.events.map((event) => ({
@@ -184,8 +184,8 @@ function FarmSchedulerPage() {
 
     if (!error && startDateTime && endDateTime && title && description) {
       try {
-        if (!user || !user.token) {
-          console.error("User token is not available");
+        if (!token) {
+          console.error("token is not available");
           return;
         }
 
@@ -196,9 +196,9 @@ function FarmSchedulerPage() {
           endTime: new Date(endDateTime),
         };
 
-        const response = await axios.post("http://localhost:5000/Farm-scheduler/add-event", newEvent, {
+        const response = await axios.post("http://localhost:3000/Farm-scheduler/add-event", newEvent, {
           headers: {
-            Authorization: `Bearer ${user.token}`,
+            Authorization: `Bearer ${token}`,
           },
         });
 

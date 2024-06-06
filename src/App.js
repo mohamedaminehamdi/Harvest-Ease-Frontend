@@ -15,7 +15,7 @@ import CommunityPage from "../src/ui/pages/CommunityPage";
 import SavedMessagesPage from "../src/ui/pages/SavedMessagePage";
 import ChatbotPageLayout from "../src/ui/components/chatbot/ChatbotPageLayout";
 import { useSelector } from "react-redux";
-import Login from "./ui/pages/Login";
+import Login from "./ui/pages/login";
 function App() {
   const isAuth = Boolean(useSelector((state) => state.auth.token));
   const protectedRoute = (element) => {
