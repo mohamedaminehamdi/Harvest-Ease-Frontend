@@ -11,7 +11,7 @@ import drizzle_icon from '../../../assets/drizzle.png'
 
 const Weather = () => {
   
-  let api_key = "ea0c8e1b70df439d427fd0ae02170344";
+  let api_key = "";
 
   const [wicon, setWicon] = React.useState(cloud_icon);
 
