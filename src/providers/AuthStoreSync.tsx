@@ -8,9 +8,9 @@ import { useAuthStore } from "@/state/useAuthStore";
 const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:5000";
 
 export function AuthStoreSync() {
-  const { isSignedIn } = useAuth();
+  const { isLoaded, isSignedIn, getToken } = useAuth();
   const { user: clerkUser } = useUser();
-  const { setClerkAuth, setBackendToken, setUser, setIsLoading, setError } = useAuthStore();
+  const { setClerkAuth, setBackendToken, setUser, setIsLoading, setError, resetAuth } = useAuthStore();
 
   useEffect(() => {
     setClerkAuth({
@@ -22,38 +22,34 @@ export function AuthStoreSync() {
 
   // Sync Clerk user with backend
   useEffect(() => {
-    if (!isSignedIn || !clerkUser?.primaryEmailAddress?.emailAddress) {
-      setBackendToken(null);
-      setUser(null);
-      setError(null);
+    if (!isLoaded) return;
+
+    const email = clerkUser?.primaryEmailAddress?.emailAddress;
+    if (!isSignedIn || !email) {
+      resetAuth();
       return;
     }
+
+    // Reuse the persisted session only if it belongs to the signed-in Clerk user
+    const { backendToken, user } = useAuthStore.getState();
+    if (backendToken && user?.email === email) return;
 
     const syncWithBackend = async () => {
       try {
         setIsLoading(true);
         setError(null);
 
-        // Try to restore from localStorage first
-        const storedToken = localStorage.getItem("auth-store-token");
-        const storedUser = localStorage.getItem("auth-store-user");
-
-        if (storedToken && storedUser) {
-          setBackendToken(storedToken);
-          setUser(JSON.parse(storedUser));
-          setIsLoading(false);
-          return;
-        }
-
-        // Sync with backend using Clerk user data
+        // Send the Clerk session JWT so the backend can verify who is signing in
+        const clerkToken = await getToken();
         const response = await fetch(`${BACKEND_URL}/auth/sync-user`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${clerkToken}`,
           },
           body: JSON.stringify({
-            email: clerkUser.primaryEmailAddress.emailAddress,
-            name: clerkUser.fullName || clerkUser.primaryEmailAddress.emailAddress.split("@")[0],
+            email,
+            name: clerkUser.fullName || email.split("@")[0],
           }),
         });
 
@@ -65,8 +61,6 @@ export function AuthStoreSync() {
         if (data.success) {
           setBackendToken(data.token);
           setUser(data.user);
-          localStorage.setItem("auth-store-token", data.token);
-          localStorage.setItem("auth-store-user", JSON.stringify(data.user));
         } else {
           setError(data.message || "Authentication failed");
         }
@@ -79,7 +73,7 @@ export function AuthStoreSync() {
     };
 
     syncWithBackend();
-  }, [isSignedIn, clerkUser?.primaryEmailAddress?.emailAddress, clerkUser?.fullName, setBackendToken, setUser, setIsLoading, setError]);
+  }, [isLoaded, isSignedIn, getToken, clerkUser?.primaryEmailAddress?.emailAddress, clerkUser?.fullName, setBackendToken, setUser, setIsLoading, setError, resetAuth]);
 
   return null;
 }

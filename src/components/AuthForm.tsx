@@ -1,5 +1,5 @@
 import React, { useState, ReactNode } from 'react';
-import { useSignIn, useSignUp } from '@clerk/nextjs';
+import { useAuth, useSignIn, useSignUp } from '@clerk/nextjs';
 import { useRouter } from 'next/navigation';
 import { useAuthStore } from '@/state/useAuthStore';
 import { apiClient } from '@/lib/api/client';
@@ -13,8 +13,9 @@ interface AuthFormProps {
 }
 
 export const AuthForm: React.FC<AuthFormProps> = ({ mode, onSuccess }) => {
-  const { isLoaded: isSignInLoaded, signIn } = useSignIn();
+  const { isLoaded: isSignInLoaded, signIn, setActive } = useSignIn();
   const { isLoaded: isSignUpLoaded, signUp } = useSignUp();
+  const { getToken } = useAuth();
   const router = useRouter();
   const { setClerkAuth, setBackendToken, setUser, setError, setIsLoading } = useAuthStore();
   
@@ -28,11 +29,11 @@ export const AuthForm: React.FC<AuthFormProps> = ({ mode, onSuccess }) => {
     try {
       setIsLoading(true);
       
-      // Sync with backend
+      // Sync with backend, sending the Clerk session JWT so the backend can verify who is signing in
       const response = await apiClient.post('/auth/sync-user', {
         email: clerkEmail,
         name: clerkName,
-      });
+      }, { token: await getToken() });
 
       if (response.success) {
         // Store auth tokens and user info
@@ -68,6 +69,7 @@ export const AuthForm: React.FC<AuthFormProps> = ({ mode, onSuccess }) => {
 
         if (response.status === 'complete') {
           const userId = response.createdSessionId;
+          await setActive({ session: userId });
           await handleClerkAuth(email, userId || email, email.split('@')[0]);
         }
       } else {
