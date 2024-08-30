@@ -10,6 +10,7 @@ function SettingsPage() {
     picturePath,
     email,
   } = useSelector((state) => state.auth.user);
+  const token = useSelector((state) => state.auth.token);
   const [profilePic, setProfilePic] = useState(
     "https://free4kwallpapers.com/uploads/originals/2015/09/15/cute-sleeping-cat-hd-widescreen-desktop-wallpaper.jpg"
   );
@@ -32,6 +33,12 @@ function SettingsPage() {
         `http://localhost:3000/settings/users/${userId}/email`,
         {
           newEmail,
+          password,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         }
       );
 
@@ -54,7 +61,13 @@ function SettingsPage() {
       const response = await axios.put(
         `http://localhost:3000/users/${userId}`,
         {
+          currentPassword,
           newPassword,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         }
       );
 
