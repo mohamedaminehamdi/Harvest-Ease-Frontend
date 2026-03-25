@@ -142,7 +142,7 @@ class APIClient {
 
         return data as T;
       } catch (error) {
-        const err = error instanceof Error ? error : new Error(String(error));
+        let err = error instanceof Error ? error : new Error(String(error));
 
         // Apply error interceptors
         for (const interceptor of this.interceptors) {
